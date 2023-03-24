@@ -368,7 +368,7 @@ stages:
 
   - ${{ if and(eq(parameters.VSCODE_COMPILE_ONLY, false), eq(variables['VSCODE_BUILD_STAGE_LINUX'], true)) }}:
     - stage: Linux
-      # dependsOn:
+      dependsOn: []
       #   - Compile
       #   - ${{ if eq(parameters.VSCODE_BUILD_TUNNEL_CLI, true) }}:
       #     - CompileCLI
@@ -485,7 +485,7 @@ stages:
 
   - ${{ if and(eq(variables['VSCODE_CIBUILD'], false), eq(parameters.VSCODE_COMPILE_ONLY, false), eq(variables['VSCODE_BUILD_STAGE_ALPINE'], true)) }}:
     - stage: Alpine
-      # dependsOn:
+      dependsOn: []
       #   - Compile
       #   - ${{ if eq(parameters.VSCODE_BUILD_TUNNEL_CLI, true) }}:
       #     - CompileCLI
