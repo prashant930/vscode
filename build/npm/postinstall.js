@@ -41,7 +41,7 @@ function yarnInstall(dir, opts) {
 		delete opts.ignoreEngines;
 	}
 
-	if (process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME'] && /^(.build\/distro\/npm\/)?remote^/.test(dir)) {
+	if (process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME'] && /^(.build\/distro\/npm\/)?remote$/.test(dir)) {
 		console.log(`Installing dependencies inside container ${process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME']} in ${dir}...`);
 		console.log(`$ yarn ${args.join(' ')}`);
 		run('docker', ['run', '-e', 'GITHUB_TOKEN', '-v', `${root}:/root/vscode`, '-v', '~/.netrc:/root/.netrc', process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME'], 'yarn', ...args], opts);
