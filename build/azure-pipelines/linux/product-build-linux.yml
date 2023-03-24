@@ -32,14 +32,14 @@ steps:
         KeyVaultName: vscode-build-secrets
         SecretsFilter: "github-distro-mixin-password,ESRP-PKI,esrp-aad-username,esrp-aad-password"
 
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        artifact: Compilation
-        path: $(Build.ArtifactStagingDirectory)
-      displayName: Download compilation output
+    # - task: DownloadPipelineArtifact@2
+    #   inputs:
+    #     artifact: Compilation
+    #     path: $(Build.ArtifactStagingDirectory)
+    #   displayName: Download compilation output
 
-    - script: tar -xzf $(Build.ArtifactStagingDirectory)/compilation.tar.gz
-      displayName: Extract compilation output
+    # - script: tar -xzf $(Build.ArtifactStagingDirectory)/compilation.tar.gz
+    #   displayName: Extract compilation output
 
     - script: |
         set -e
