@@ -13,10 +13,16 @@ const yarn = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
 const root = path.dirname(path.dirname(__dirname));
 
 function run(command, args, opts) {
+	console.log('$ ' + command + ' ' + args.join(' '));
+
 	const result = cp.spawnSync(command, args, opts);
 
-	if (result.error || result.status !== 0) {
+	if (result.error) {
+		console.error(`ERR Failed to spawn process: ${result.error}`);
 		process.exit(1);
+	} else if (result.status !== 0) {
+		console.error(`ERR Process exited with code: ${result.status}`);
+		process.exit(result.status);
 	}
 }
 
@@ -44,13 +50,11 @@ function yarnInstall(dir, opts) {
 
 	if (process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME'] && /^(.build\/distro\/npm\/)?remote$/.test(dir)) {
 		const userinfo = os.userInfo();
-		console.log(`Installing dependencies inside container ${process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME']} in ${dir}...`);
-		console.log(`$ yarn ${args.join(' ')}`);
+		console.log(`Installing dependencies in ${dir} inside container ${process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME']}...`);
 		run('docker', ['run', '-e', 'GITHUB_TOKEN', '-v', `${root}:/root/vscode`, '-v', `${userinfo.homedir}/.netrc:/root/.netrc`, process.env['VSCODE_REMOTE_DEPENDENCIES_CONTAINER_NAME'], 'yarn', ...args], opts);
 		run('sudo', ['chown', '-R', `${userinfo.uid}:${userinfo.gid}`, `${dir}/node_modules`], opts);
 	} else {
 		console.log(`Installing dependencies in ${dir}...`);
-		console.log(`$ yarn ${args.join(' ')}`);
 		run(yarn, args, opts);
 	}
 }
